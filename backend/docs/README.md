@@ -38,6 +38,32 @@ flowchart LR
   M --> H[generate_report → HTML]
 ```
 
+
+## 后端目录结构
+```text
+backend/
+├── app/
+│   ├── api/                     # FastAPI 路由层（简历、匹配、知识库、诊断）
+│   ├── core/                    # 全局配置与应用初始化
+│   ├── services/                # 业务服务（解析、向量检索、报告生成等）
+│   ├── utils/                   # 工具模块（缓存、重试等通用能力）
+│   ├── models/                  # 数据模型或 Pydantic Schema
+│   └── data_processing/         # 预留的数据处理组件
+├── scripts/
+│   └── ETL.py                   # 岗位数据清洗与向量化入库脚本
+├── data/
+│   ├── raw/                     # 原始岗位数据源（CSV / Excel 等）
+│   ├── processed/               # 清洗或中间处理结果
+│   ├── chroma/                  # 默认 Chroma 向量库持久化目录
+│   ├── chroma_backup/           # 上一次 Chroma 数据备份（ETL 自动维护）
+│   ├── uploads/                 # 上传后的原始简历文件
+│   └── reports/                 # 生成的 HTML 匹配报告
+├── docs/                        # 后端文档（README、API 说明、概要等）
+├── tests/                       # 单元测试（TTL 缓存等）
+└── requirements.txt             # Python 依赖列表
+```
+
+
 ## 功能特性
 - 多格式简历解析：支持 PDF/DOCX/TXT，自动抽取结构化字段。
 - 职位知识库检索：LangChain + Chroma 持久化向量库，关键词检索与列表。
@@ -105,4 +131,4 @@ pip install -r requirements.txt
 - 提供 Docker 镜像与部署脚本。
 
 ## 许可证
-MIT License © 2024
+MIT License © 2025
