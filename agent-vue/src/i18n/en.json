@@ -1,0 +1,74 @@
+{
+  "app": {
+    "title": "Job Seeker Intelligent Agent"
+  },
+  "nav": {
+    "home": "Home",
+    "upload": "Upload Resume",
+    "recommend": "Recommendations",
+    "report": "Match Report"
+  },
+  "common": {
+    "language": "Language",
+    "footer": "© {year} Job Seeker Intelligent Agent. All rights reserved.",
+    "back": "Back",
+    "retry": "Retry",
+    "loading": "Loading..."
+  },
+  "home": {
+    "headline": "Discover Your Perfect Job Match",
+    "description": "Upload your resume, let the intelligent agent analyze your strengths, and receive tailored job recommendations backed by AI insights.",
+    "cta": "Start by Uploading Resume",
+    "stepsTitle": "How It Works",
+    "stepUpload": "Upload your resume securely and review the parsed information.",
+    "stepRecommend": "Receive curated job matches ranked by relevance and fit.",
+    "stepReport": "View detailed match reports highlighting strengths and gaps."
+  },
+  "upload": {
+    "pageTitle": "Resume Upload",
+    "instructions": "Drag & drop your resume file here, or click to upload",
+    "supportedTypes": "Supported formats: PDF, DOCX, TXT · Max 10MB",
+    "selectFile": "Choose File",
+    "status": {
+      "uploading": "Uploading...",
+      "success": "Resume uploaded successfully.",
+      "successTitle": "Upload Complete",
+      "errorTitle": "Upload Failed",
+      "failed": "Upload failed. Please try again."
+    },
+    "errors": {
+      "unsupported": "Only PDF, DOCX, or TXT files are allowed.",
+      "tooLarge": "File exceeds 10MB limit.",
+      "noData": "Resume data is unavailable. Please re-upload."
+    },
+    "previewTitle": "Resume Overview",
+    "basicInfo": "Basic Information",
+    "skills": "Skills",
+    "experience": "Experience"
+  },
+  "recommend": {
+    "pageTitle": "Recommended Jobs",
+    "summaryTitle": "Match Summary",
+    "summaryEmpty": "Upload your resume to receive AI-generated recommendations tailored to your profile.",
+    "totalMatches": "Total Matches",
+    "bestMatchScore": "Best Match Score",
+    "matchScore": "Match Score",
+    "deadline": "Deadline",
+    "viewDetail": "View Details",
+    "emptyTitle": "No Recommendations Yet",
+    "emptyDescription": "We couldn't find matching jobs at the moment. Try adjusting your resume or retry later."
+  },
+  "report": {
+    "pageTitle": "Match Analysis Report",
+    "analysisTitle": "Match Analysis",
+    "similarityScore": "Similarity",
+    "refresh": "Refresh Report",
+    "fetchFailed": "Failed to load report content.",
+    "noContent": "Report is not available yet.",
+    "backToRecommend": "← Back to Recommendations",
+    "jobTitle": "Position",
+    "company": "Company",
+    "location": "Location",
+    "resumeName": "Candidate"
+  }
+}

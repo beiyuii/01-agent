@@ -1,0 +1,74 @@
+{
+  "app": {
+    "title": "求职者智能代理"
+  },
+  "nav": {
+    "home": "首页",
+    "upload": "上传简历",
+    "recommend": "岗位推荐",
+    "report": "匹配报告"
+  },
+  "common": {
+    "language": "语言",
+    "footer": "© {year} 求职者智能代理。保留所有权利。",
+    "back": "返回",
+    "retry": "重试",
+    "loading": "加载中..."
+  },
+  "home": {
+    "headline": "发现与你最匹配的岗位",
+    "description": "上传简历，由智能代理分析你的优势，为你提供 AI 驱动的精准岗位推荐与深度报告。",
+    "cta": "立即上传简历",
+    "stepsTitle": "流程概览",
+    "stepUpload": "安全上传简历并确认解析信息。",
+    "stepRecommend": "获取基于匹配度排序的岗位推荐列表。",
+    "stepReport": "查看每个岗位的详细匹配分析与优化建议。"
+  },
+  "upload": {
+    "pageTitle": "简历上传",
+    "instructions": "拖拽文件到此处，或点击选择上传",
+    "supportedTypes": "支持格式：PDF / DOCX / TXT · 最大 10MB",
+    "selectFile": "选择文件",
+    "status": {
+      "uploading": "正在上传...",
+      "success": "简历上传成功。",
+      "successTitle": "上传完成",
+      "errorTitle": "上传失败",
+      "failed": "上传失败，请稍后重试。"
+    },
+    "errors": {
+      "unsupported": "仅支持 PDF、DOCX 或 TXT 文件。",
+      "tooLarge": "文件大小超过 10MB 限制。",
+      "noData": "未获取到简历数据，请重新上传。"
+    },
+    "previewTitle": "简历摘要",
+    "basicInfo": "基础信息",
+    "skills": "技能标签",
+    "experience": "工作经历"
+  },
+  "recommend": {
+    "pageTitle": "推荐岗位列表",
+    "summaryTitle": "匹配摘要",
+    "summaryEmpty": "上传简历后，系统会生成与你最契合的岗位推荐。",
+    "totalMatches": "推荐数量",
+    "bestMatchScore": "最高匹配度",
+    "matchScore": "匹配度",
+    "deadline": "截止日期",
+    "viewDetail": "查看详情",
+    "emptyTitle": "暂时没有匹配岗位",
+    "emptyDescription": "当前未找到合适的岗位，请稍后再试或更新简历内容。"
+  },
+  "report": {
+    "pageTitle": "匹配分析报告",
+    "analysisTitle": "匹配分析",
+    "similarityScore": "相似度",
+    "refresh": "刷新报告",
+    "fetchFailed": "报告内容加载失败。",
+    "noContent": "报告暂不可用。",
+    "backToRecommend": "← 返回推荐列表",
+    "jobTitle": "岗位名称",
+    "company": "公司",
+    "location": "工作地点",
+    "resumeName": "候选人"
+  }
+}
