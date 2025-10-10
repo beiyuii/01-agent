@@ -15,7 +15,14 @@ app = FastAPI(title="职位Agent系统")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # 根据前端实际地址调整
+    allow_origins=[
+        "http://localhost:5173",
+        "http://linter.top",
+        "https://linter.top",
+        "http://www.linter.top",
+        "https://www.linter.top",
+    ],
+    allow_origin_regex=r"https?://(.+\.)?linter\.top",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,4 +39,3 @@ app.include_router(routes_match)
 @app.get("/")
 async def read_root():
     return {"message": "Hello, World!"}
-

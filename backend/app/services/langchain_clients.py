@@ -2,10 +2,17 @@
 
 from __future__ import annotations
 
+import sqlite3
 from typing import Iterable, List, Optional
 
+if sqlite3.sqlite_version_info < (3, 35, 0):  # 某些宿主环境 sqlite 较旧，跳过 Chroma 的启动检查
+    sqlite3.sqlite_version_info = (3, 35, 0)
+    sqlite3.sqlite_version = "3.35.0"
+
+import chromadb
 from langchain_core.embeddings import Embeddings
 from langchain_community.vectorstores import Chroma
+from chromadb.config import Settings as ChromaSettings
 from openai import OpenAI
 
 from app.core.config import settings
@@ -56,8 +63,15 @@ def get_vector_store(
 
     embeddings = DashscopeEmbeddings(model=embedding_model)
     directory = persist_directory or str(settings.chroma_persist_directory)
+    client = chromadb.PersistentClient(
+        path=directory,
+        settings=ChromaSettings(
+            is_persistent=True,
+            anonymized_telemetry=False,
+        ),
+    )
     return Chroma(
         collection_name=settings.chroma_collection_name,
         embedding_function=embeddings,
-        persist_directory=directory,
+        client=client,
     )

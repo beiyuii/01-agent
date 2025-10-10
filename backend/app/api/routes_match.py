@@ -28,6 +28,60 @@ llm_client = OpenAI(
 _summary_cache = TTLCache(ttl_seconds=settings.cache_ttl)
 
 
+def _clean_value(value: Any) -> str | None:
+    if value is None:
+        return None
+    if isinstance(value, str):
+        candidate = value.strip()
+    else:
+        candidate = str(value).strip()
+    return candidate or None
+
+
+def _extract_resume_sections(resume_data: dict) -> tuple[str, list[str], list[str]]:
+    """从简历数据中提取技能与经历文本，过滤掉空值。"""
+    skills_source = resume_data.get("skills")
+    if isinstance(skills_source, list):
+        skills_iterable = skills_source
+    elif isinstance(skills_source, str):
+        skills_iterable = [skills_source]
+    elif skills_source is None:
+        skills_iterable = []
+    else:
+        skills_iterable = [skills_source]
+
+    skills = []
+    for item in skills_iterable:
+        cleaned = _clean_value(item)
+        if cleaned:
+            skills.append(cleaned)
+
+    experience_source = resume_data.get("experience")
+    if isinstance(experience_source, list):
+        experience_iterable = experience_source
+    elif isinstance(experience_source, dict):
+        experience_iterable = [experience_source]
+    elif experience_source is None:
+        experience_iterable = []
+    else:
+        experience_iterable = [experience_source]
+
+    exp_desc = []
+    for item in experience_iterable:
+        if isinstance(item, dict):
+            cleaned = _clean_value(item.get("description"))
+        else:
+            cleaned = _clean_value(item)
+        if cleaned:
+            exp_desc.append(cleaned)
+
+    text_parts = skills + exp_desc
+    if not text_parts:
+        raise HTTPException(status_code=400, detail="简历缺少技能或经历信息，无法匹配岗位")
+
+    return " ".join(text_parts), skills, exp_desc
+
+
 
 @router.get("/auto")
 def auto_match_jobs(
@@ -36,9 +90,7 @@ def auto_match_jobs(
 ):
     """自动匹配推荐岗位"""
     resume_data = load_resume_json(resume_file)
-    resume_text = " ".join(resume_data.get("skills", [])) + " " + " ".join(
-        exp.get("description", "") for exp in resume_data.get("experience", [])
-    )
+    resume_text, _, _ = _extract_resume_sections(resume_data)
 
     resume_embedding = get_embedding(resume_text)
     vector_store = get_vector_store()
@@ -110,9 +162,7 @@ def match_single_job(
     """对单个岗位进行详细匹配分析"""
 
     resume_data = load_resume_json(resume_file)
-    resume_text = " ".join(resume_data.get("skills", [])) + " " + " ".join(
-        exp.get("description", "") for exp in resume_data.get("experience", [])
-    )
+    resume_text, cleaned_skills, _ = _extract_resume_sections(resume_data)
 
     vector_store = get_vector_store()
     collection = vector_store._collection  # type: ignore[attr-defined]
@@ -143,21 +193,22 @@ def match_single_job(
     jd_text = job_docs["documents"][best_index]
     job_meta = job_docs["metadatas"][best_index]
 
-    prompt = f"""
-请作为一名职业顾问，对以下简历与岗位进行详细匹配分析：
----
-【候选人技能与经历】
-{resume_text}
-
-【岗位描述】
-{jd_text}
-
-请输出：
-1. 匹配度评分（0~100）
-2. 匹配技能和经验
-3. 缺失技能
-4. 提升建议
-"""
+    prompt_lines = [
+        "请作为一名职业顾问，对以下简历与岗位进行详细匹配分析：",
+        "---",
+        "【候选人技能与经历】",
+        resume_text,
+        "",
+        "【岗位描述】",
+        jd_text,
+        "",
+        "请输出：",
+        "1. 匹配度评分（0~100）",
+        "2. 匹配技能和经验",
+        "3. 缺失技能",
+        "4. 提升建议",
+    ]
+    prompt = "\n".join(prompt_lines)
     analysis_cache_key = md5(prompt.encode("utf-8")).hexdigest()
     analysis = _summary_cache.get(analysis_cache_key)
     if analysis is None:
@@ -181,7 +232,7 @@ def match_single_job(
         "location": job_meta.get("location"),
         "similarity_score": round(score, 4),
         "analysis": analysis,
-        "matched_skills": resume_data.get("skills", []),
+        "matched_skills": cleaned_skills,
         "missing_skills": [],  # TODO: 可后续通过关键词比对生成
         "recommendations": "根据分析结果，建议进一步强化岗位相关技能。"
     }
